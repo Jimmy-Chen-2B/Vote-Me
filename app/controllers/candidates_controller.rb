@@ -22,6 +22,21 @@ class CandidatesController < ApplicationController
     end
   end
 
+  def edit
+    @candidate = Candidate.find_by(id: params[:id])
+  end
+
+  def update
+    @candidate = Candidate.find_by(id: params[:id])
+
+    if @candidate.update(candidate_params)
+      flash[:notice] = "Candidate Updated!"
+      redirect_to "/candidates"
+    else
+      render :edit
+    end
+  end
+
   private  
   def candidate_params
     params.require(:candidate).permit(:name, :party, :age, :politics)
