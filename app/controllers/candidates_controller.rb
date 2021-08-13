@@ -1,5 +1,5 @@
 class CandidatesController < ApplicationController
-  def index 
+  def index
     @candidates = Candidate.all
   end
 
@@ -15,8 +15,8 @@ class CandidatesController < ApplicationController
     @candidate = Candidate.new(candidate_params)
 
     if @candidate.save
-      flash[:notice] = "Candidate created!"
-      redirect_to "/candidates"
+      flash[:notice] = 'Candidate created!'
+      redirect_to '/candidates'
     else
       render :new
     end
@@ -30,15 +30,32 @@ class CandidatesController < ApplicationController
     @candidate = Candidate.find_by(id: params[:id])
 
     if @candidate.update(candidate_params)
-      flash[:notice] = "Candidate Updated!"
-      redirect_to "/candidates"
+      flash[:notice] = 'Candidate Updated!'
+      redirect_to '/candidates'
     else
       render :edit
     end
   end
 
-  private  
+  def destroy
+    @candidate = Candidate.find(params[:id])
+    @candidate.destroy
+
+    flash[:notice] = 'Candidate Deleted!'
+    redirect_to '/candidates'
+  end
+
+  def vote
+    @candidate = Candidate.find(params[:id])
+    @candidate.increment(:votes)
+    @candidate.save
+    flash[:notice] = 'Voted!'
+    redirect_to '/candidates'
+  end
+
+  private
+
   def candidate_params
     params.require(:candidate).permit(:name, :party, :age, :politics)
-  end      
+  end
 end
