@@ -10,16 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_08_141129) do
-
-  create_table "candidates", force: :cascade do |t|
-    t.string "name"
-    t.string "party"
-    t.integer "age"
-    t.text "politics"
-    t.integer "votes", default: 0
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+ActiveRecord::Schema.define(version: 20_210_814_152_854) do
+  create_table 'candidates', force: :cascade do |t|
+    t.string 'name'
+    t.string 'party'
+    t.integer 'age'
+    t.text 'politics'
+    t.integer 'votes', default: 0
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.integer 'vote_logs_counter', default: 0
   end
 
+  create_table 'vote_logs', force: :cascade do |t|
+    t.integer 'candidate_id', null: false
+    t.string 'ip_address'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['candidate_id'], name: 'index_vote_logs_on_candidate_id'
+  end
+
+  add_foreign_key 'vote_logs', 'candidates'
 end
